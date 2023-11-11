@@ -1,0 +1,1 @@
+A CLI tool that helps you diff two strings easily, which is built on top of [go-diff](https://github.com/sergi/go-diff).
