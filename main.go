@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/json"
 	"flag"
 	"fmt"
 	"os"
@@ -19,6 +18,10 @@ func main() {
 	multiLineFlagDescription := "Whether the input strings are multi-line."
 	multiLineFlagLong := flag.Bool("lines", multiLineFlagDefault, multiLineFlagDescription)
 	multiLineFlagShort := flag.Bool("l", multiLineFlagDefault, multiLineFlagDescription)
+	jsonFlagDefault := false
+	jsonFlagDescription := "Whether the input strings are in JSON format."
+	jsonFlagLong := flag.Bool("json", jsonFlagDefault, jsonFlagDescription)
+	jsonFlagShort := flag.Bool("j", jsonFlagDefault, jsonFlagDescription)
 	flag.Parse()
 
 	texts := flag.Args()
@@ -28,16 +31,11 @@ func main() {
 		return
 	}
 
-	if isJsonString(texts[0]) && isJsonString(texts[1]) {
+	if *jsonFlagShort || *jsonFlagLong {
 		diffJson(texts[0], texts[1])
 		return
 	}
 	diffSimpleText(texts[0], texts[1], *multiLineFlagShort || *multiLineFlagLong, *deltaFlagShort || *deltaFlagLong)
-}
-
-func isJsonString(text string) bool {
-	var raw json.RawMessage
-	return json.Unmarshal([]byte(text), &raw) == nil
 }
 
 func diffSimpleText(src string, dest string, multiLine bool, delta bool) {
